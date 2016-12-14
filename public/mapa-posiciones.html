@@ -1,0 +1,58 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="bower_components/google-map/google-map.html">
+<link rel="import" href="bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="bower_components/google-map/google-map-marker.html">
+
+
+<dom-module id="mapa-posiciones">
+    <template>
+        <style>
+        .saludo {
+                /*position: relative;*/
+                font-size: 60px;
+                padding: 10px 0px 20px 0px;
+                /*margin-left: 50px;*/
+                text-align: center;
+                margin: auto;
+                color: #fff;
+                color: rgba(255, 255, 255, 0.9);
+                text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+            }
+
+            google-map {
+                width: 600px;
+                height: 400px;
+                margin: auto;
+                color: #aaaaaa;
+                border-width: 5px;
+                border-style: solid;
+
+            }
+        </style>
+         <firebase-app 
+         name="firebaseApp"
+        api-key="AIzaSyCz2Qgclz-JFrjtsbunbwSpkDfg5M_Br-U"
+        auth-domain="miposiciondb.firebaseapp.com"
+        database-url="https://miposiciondb.firebaseio.com">
+        </firebase-app> 
+        <firebase-query id="query" app-name='firebaseApp' path="/marcas" data="{{dato}}">
+        </firebase-query>
+        <h3 class="saludo"> Geolocalizacion del Navegador</h3>
+        <google-map latitude="0" longitude="0" fit-to-markers>
+            <template is="dom-repeat" items='[[dato]]'>
+                <google-map-marker latitude="[[item.latitud]]" longitude="[[item.longitud]]"></google-map-marker>
+            </template>
+
+        </google-map>
+    </template>
+    <script>
+        Polymer({
+            is: 'mapa-posiciones',
+             properties: {
+                misDatos: Object
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,82 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+
+<script src="bower_components/firebase/firebase.js"></script>
+
+<dom-module id="localizador-usuario">
+    <template>
+       
+        <firebase-app 
+         name="firebaseApp2"
+        api-key="AIzaSyCz2Qgclz-JFrjtsbunbwSpkDfg5M_Br-U"
+        auth-domain="miposiciondb.firebaseapp.com"
+        database-url="https://miposiciondb.firebaseio.com">
+        </firebase-app> 
+
+       <firebase-auth
+        id="fauth"
+        app-name="firebaseApp2"
+        signed-in="{{signedIn}}"
+        user="{{user}}">
+        </firebase-auth>
+
+        <firebase-query
+        id="firebaseq"
+        app-name="firebaseApp2"
+        path="/marcas/[[idUser]]">
+        </firebase-query>
+        
+        <paper-toolbar>
+            <paper-icon-button icon="maps:my-location"></paper-icon-button>
+            <div class="title">Geolocalización</div>
+            
+            <paper-button raised > Dar mi Posicion</paper-button>
+            
+        </paper-toolbar>
+    </template>
+    <script>
+    Polymer({
+      is: 'localizador-usuario',
+      properties: {
+        user: Object,
+        latitud: String,
+        longitud: String,
+          localizacion : Object,
+        idUser:{
+          type : String,
+          value : 'BB'
+        }
+      },
+      attached: function() {
+        var _self = this;
+        // console.log(user);
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position){
+             _self.localizacion = {
+               latitud: position.coords.latitude,
+               longitud: position.coords.longitude
+             };
+          });
+        } else {
+          alert("Navegador no compatible con geolocalización")
+        }
+      },
+      observers: [
+        'crearMarca(localizacion)'
+      ],
+      crearMarca: function(loc) {
+        _self = this;
+        console.log(" antes "+ this.idUser);
+        var fauth = this.$.fauth;
+        var firebaseq = this.$.firebaseq;
+            fauth.signInAnonymously().then(function (response){
+            _self.idUser= response.uid;
+            firebaseq.ref.set(loc);
+            });
+      }
+    });
+  </script>
+
+</dom-module>

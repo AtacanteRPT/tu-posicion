@@ -1,0 +1,21 @@
+{
+  "name": "tu-posicion",
+  "authors": [
+    "AtacanteRPT <rpaucara13@umsa.bo>"
+  ],
+  "description": "georef",
+  "main": "index.html",
+  "keywords": [
+    "a",
+    "b",
+    "c"
+  ],
+  "license": "MIT",
+  "homepage": "index.html",
+  "dependencies": {
+    "polymerfire": "firebase/polymerfire#^0.10.3",
+    "google-map": "GoogleWebComponents/google-map#^1.1.14",
+    "paper-button": "PolymerElements/paper-button#^1.0.14",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.7"
+  }
+}
